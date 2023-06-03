@@ -8,5 +8,8 @@ const recipeController = require(path.join(
   "recipeController"
 ));
 
-router.route("/").get(recipeController.getAllRecipes);
+router
+  .route("/")
+  .get(recipeController.getAllRecipes)
+  .post(recipeController.createRecipe);
 module.exports = router;
