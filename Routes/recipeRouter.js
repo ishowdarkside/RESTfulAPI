@@ -7,9 +7,15 @@ const recipeController = require(path.join(
   "controllers",
   "recipeController"
 ));
+const authController = require(path.join(
+  __dirname,
+  "..",
+  "controllers",
+  "authController"
+));
 
 router
   .route("/")
   .get(recipeController.getAllRecipes)
-  .post(recipeController.createRecipe);
+  .post(authController.protect, recipeController.createRecipe);
 module.exports = router;
