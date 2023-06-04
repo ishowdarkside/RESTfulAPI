@@ -16,10 +16,15 @@ const RecipeSchema = new mongoose.Schema({
   },
   ingridients: [
     [
-      { type: "String", required: ["true", "Please provide ingridient name"] },
       {
-        type: "String",
-        required: ["true", "Please provide ingridient quanitity"],
+        name: {
+          type: "String",
+          required: ["true", "Please provide ingridient name"],
+        },
+        quantity: {
+          type: "String",
+          required: ["true", "Please provide ingridient quanitity"],
+        },
       },
     ],
   ],
@@ -32,6 +37,18 @@ const RecipeSchema = new mongoose.Schema({
     ref: "User",
   },
 });
+
+RecipeSchema.statics.checkFields = function (body) {
+  const currentFields = Object.keys(body);
+  if (
+    !currentFields.includes("title") ||
+    !currentFields.includes("description") ||
+    !currentFields.includes("ingridients") ||
+    !currentFields.includes("cookingTime")
+  ) {
+    return false;
+  } else return true;
+};
 
 const Recipe = mongoose.model("Recipe", RecipeSchema);
 module.exports = Recipe;

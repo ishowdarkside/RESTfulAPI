@@ -27,14 +27,23 @@ const UserSchema = new mongoose.Schema({
     minlength: [8, "Minimum length for password is 8 characters"],
     maxLength: [30, "Maximum length for password is 30 characters"],
   },
+  passwordChangedAt: {
+    type: Date,
+  },
 });
 
+//Hash password if account is new or password was changed
 UserSchema.pre("save", async function (next) {
-  if (!this.isNew) return next();
-  if (!this.isModified("password")) return next();
+  if (!this.isNew || !this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 12);
   next();
 });
+
+UserSchema.methods.checkJWTValidity = function (iat) {
+  if (!this.passwordChangedAt) return true;
+  if (iat * 1000 < this.passwordChangedAt.getTime()) return false;
+  else return true;
+};
 
 const User = mongoose.model("User", UserSchema);
 module.exports = User;

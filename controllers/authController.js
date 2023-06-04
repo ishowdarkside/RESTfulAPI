@@ -68,4 +68,14 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(
       new AppError("The user associated with the token no longer exists.", 401)
     );
+  if (!user.checkJWTValidity(verified.iat))
+    return next(
+      new AppError(
+        "Password changed after token was issued.Please login again!",
+        401
+      )
+    );
+  console.log(user.email);
+  req.user = user;
+  next();
 });
