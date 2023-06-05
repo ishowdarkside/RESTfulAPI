@@ -26,9 +26,19 @@ module.exports = (err, req, res, next) => {
       });
     }
     if (err.code === 11000) {
-      res.status(400).json({
+      const msg =
+        Object.keys(err.keyPattern)[0] === "email"
+          ? "Email already in use"
+          : "Recipe with this title already exist. Please try different one!";
+      return res.status(400).json({
         status: "fail",
-        message: "Email already in use!",
+        message: msg,
+      });
+    }
+    if (err.name === "CastError") {
+      return res.status(404).json({
+        status: "fail",
+        message: `Failed to query for ${err.value}`,
       });
     } else {
       return res.status(500).json({

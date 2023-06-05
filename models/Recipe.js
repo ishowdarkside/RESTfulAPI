@@ -15,18 +15,16 @@ const RecipeSchema = new mongoose.Schema({
     required: [true, "Please provide description for your recipe!"],
   },
   ingridients: [
-    [
-      {
-        name: {
-          type: "String",
-          required: ["true", "Please provide ingridient name"],
-        },
-        quantity: {
-          type: "String",
-          required: ["true", "Please provide ingridient quanitity"],
-        },
+    {
+      name: {
+        type: "String",
+        required: ["true", "Please provide ingridient name"],
       },
-    ],
+      quantity: {
+        type: "String",
+        required: ["true", "Please provide ingridient quanitity"],
+      },
+    },
   ],
   cookingTime: {
     type: Number,

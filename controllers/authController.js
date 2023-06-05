@@ -75,7 +75,7 @@ exports.protect = catchAsync(async (req, res, next) => {
         401
       )
     );
-  console.log(user.email);
+
   req.user = user;
   next();
 });

@@ -18,4 +18,7 @@ router
   .route("/")
   .get(recipeController.getAllRecipes)
   .post(authController.protect, recipeController.createRecipe);
+
+router.route("/recipe/:recipeId").get(recipeController.getRecipeById);
+
 module.exports = router;

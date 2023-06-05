@@ -30,6 +30,11 @@ const UserSchema = new mongoose.Schema({
   passwordChangedAt: {
     type: Date,
   },
+  recipesTotal: {
+    type: Number,
+    default: 0,
+  },
+  recipes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Recipe" }],
 });
 
 //Hash password if account is new or password was changed
