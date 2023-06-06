@@ -34,6 +34,37 @@ const RecipeSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  category: {
+    type: String,
+    enum: [
+      "soup",
+      "fast food",
+      "italian cuisine",
+      "mexican cuisine",
+      "chinese cuisine",
+      "indian cuisine",
+      "japanese cuisine",
+      "mediterranean cuisine",
+      "middle Eastern cuisine",
+      "thai cuisine",
+      "greek cuisine",
+      "french cuisine",
+      "american cuisine",
+      "barbecue",
+      "seafood",
+      "vegetarian",
+      "gluten-free",
+      "desserts",
+      "breakfast",
+      "salads",
+      "sandwiches",
+      "pizza",
+      "steaks",
+      "sushi",
+      "pasta",
+      "noodles",
+    ],
+  },
 });
 
 RecipeSchema.statics.checkFields = function (body) {
@@ -42,7 +73,8 @@ RecipeSchema.statics.checkFields = function (body) {
     !currentFields.includes("title") ||
     !currentFields.includes("description") ||
     !currentFields.includes("ingridients") ||
-    !currentFields.includes("cookingTime")
+    !currentFields.includes("cookingTime") ||
+    !currentFields.includes("category")
   ) {
     return false;
   } else return true;

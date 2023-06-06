@@ -14,11 +14,15 @@ const authController = require(path.join(
   "authController"
 ));
 
+//Route for getting all recipes and creating recipe
 router
   .route("/")
   .get(recipeController.getAllRecipes)
   .post(authController.protect, recipeController.createRecipe);
 
+//route for querying for recipe by its id.
 router.route("/recipe/:recipeId").get(recipeController.getRecipeById);
 
+//route for querying for recipes by category
+router.get("/category/:category", recipeController.getRecipeByCategory);
 module.exports = router;

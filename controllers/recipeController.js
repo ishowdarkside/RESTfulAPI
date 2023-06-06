@@ -10,7 +10,23 @@ const Recipe = require(path.join(__dirname, "..", "models", "Recipe"));
 const User = require(path.join(__dirname, "..", "models", "User"));
 
 exports.getAllRecipes = catchAsync(async (req, res, next) => {
-  const recipes = await Recipe.find();
+  const page = req.query.page || 1;
+  const skip = (page - 1) * 10;
+  const recipes = await Recipe.find().limit(10).skip(skip);
+  res.status(200).json({
+    status: "success",
+    data: recipes,
+  });
+});
+
+exports.getRecipeByCategory = catchAsync(async (req, res, next) => {
+  const page = +req.query.page || 1;
+  const skip = (page - 1) * 10;
+  const recipes = await Recipe.find({ category: req.params.category })
+    .limit(10)
+    .skip(skip);
+  if (recipes.length === 0)
+    return next(new AppError("No recipes found for this category!"));
   res.status(200).json({
     status: "success",
     data: recipes,
@@ -29,6 +45,7 @@ exports.createRecipe = catchAsync(async (req, res, next) => {
     ingridients: req.body.ingridients,
     author: req.user.id,
     cookingTime: req.body.cookingTime,
+    category: req.body.category,
   });
 
   user.recipesTotal++;
