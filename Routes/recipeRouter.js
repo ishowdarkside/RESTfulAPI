@@ -25,4 +25,14 @@ router.route("/recipe/:recipeId").get(recipeController.getRecipeById);
 
 //route for querying for recipes by category
 router.get("/category/:category", recipeController.getRecipeByCategory);
+
+//route for querying for current user recipes
+router.get("/myRecipes", authController.protect, recipeController.getMyRecipes);
+
+//Delete recipe with its id
+router.delete(
+  "/deleteRecipe/:recipeId",
+  authController.protect,
+  recipeController.deleteRecipe
+);
 module.exports = router;

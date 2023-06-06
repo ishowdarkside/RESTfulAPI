@@ -79,3 +79,24 @@ exports.getRecipeById = catchAsync(async (req, res, next) => {
     data: recipe,
   });
 });
+
+exports.getMyRecipes = catchAsync(async (req, res, next) => {
+  const recipes = await Recipe.find({ author: req.user.id });
+  res.status(200).json({
+    status: "success",
+    results: recipes.length,
+    data: recipes,
+  });
+});
+
+exports.deleteRecipe = catchAsync(async (req, res, next) => {
+  const recipe = await Recipe.findById(req.params.recipeId);
+  if (!recipe.author.equals(req.user.id))
+    return next(
+      new AppError("You don't have permission to preform this operation", 401)
+    );
+  await recipe.deleteOne();
+  res.status(204).json({
+    status: "success",
+  });
+});
