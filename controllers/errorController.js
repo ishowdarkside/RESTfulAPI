@@ -9,7 +9,7 @@ module.exports = (err, req, res, next) => {
   } else if (process.env.NODE_ENV === "production") {
     const status = err.statusCode || 500;
     if (err.name === "ValidationError") {
-      if (err.errors.category.path == "category") {
+      if (err.errors?.category?.path == "category") {
         return res.status(400).json({
           status: "fail",
           msg: `Whoops, invalid category...Check out ${req.protocol}://www.${req.hostname}/help/categories for more help. `,
@@ -24,7 +24,6 @@ module.exports = (err, req, res, next) => {
       return res.status(status).json({
         status: "fail",
         message: msg,
-        test: err,
       });
     }
 

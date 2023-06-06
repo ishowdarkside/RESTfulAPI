@@ -10,11 +10,13 @@ const Recipe = require(path.join(__dirname, "..", "models", "Recipe"));
 const User = require(path.join(__dirname, "..", "models", "User"));
 
 exports.getAllRecipes = catchAsync(async (req, res, next) => {
-  const page = req.query.page || 1;
+  const page = +req.query.page || 1;
   const skip = (page - 1) * 10;
   const recipes = await Recipe.find().limit(10).skip(skip);
   res.status(200).json({
     status: "success",
+    page,
+    results: recipes.length,
     data: recipes,
   });
 });
@@ -22,13 +24,19 @@ exports.getAllRecipes = catchAsync(async (req, res, next) => {
 exports.getRecipeByCategory = catchAsync(async (req, res, next) => {
   const page = +req.query.page || 1;
   const skip = (page - 1) * 10;
+  if (req.params.category.includes("-"))
+    req.params.category = req.params.category.split("-").join(" ");
+  console.log(req.params.category);
+
   const recipes = await Recipe.find({ category: req.params.category })
     .limit(10)
-    .skip(skip);
-  if (recipes.length === 0)
-    return next(new AppError("No recipes found for this category!"));
+    .skip(skip)
+    .populate({ path: "author", select: "name" });
+
   res.status(200).json({
     status: "success",
+    page,
+    results: recipes.length,
     data: recipes,
   });
 });
@@ -42,7 +50,7 @@ exports.createRecipe = catchAsync(async (req, res, next) => {
   let recipe = await Recipe.create({
     title: req.body.title,
     description: req.body.description,
-    ingridients: req.body.ingridients,
+    ingredients: req.body.ingredients,
     author: req.user.id,
     cookingTime: req.body.cookingTime,
     category: req.body.category,

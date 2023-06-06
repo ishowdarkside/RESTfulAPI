@@ -8,13 +8,13 @@ const RecipeSchema = new mongoose.Schema({
     ],
     required: [true, "Please provide recipe title!"],
     minlength: [3, "Minimum length for title is 3 letters"],
-    maxlength: [20, "Maximum length for title is 20 letters"],
+    maxlength: [30, "Maximum length for title is 20 letters"],
   },
   description: {
     type: "String",
     required: [true, "Please provide description for your recipe!"],
   },
-  ingridients: [
+  ingredients: [
     {
       name: {
         type: "String",
@@ -72,7 +72,7 @@ RecipeSchema.statics.checkFields = function (body) {
   if (
     !currentFields.includes("title") ||
     !currentFields.includes("description") ||
-    !currentFields.includes("ingridients") ||
+    !currentFields.includes("ingredients") ||
     !currentFields.includes("cookingTime") ||
     !currentFields.includes("category")
   ) {
