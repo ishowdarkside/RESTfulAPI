@@ -65,6 +65,7 @@ const RecipeSchema = new mongoose.Schema({
       "noodles",
     ],
   },
+  ratings: [{ type: mongoose.Schema.ObjectId, ref: "Rating" }],
 });
 
 RecipeSchema.statics.checkFields = function (body) {

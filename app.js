@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const recipeRouter = require("./Routes/recipeRouter");
 const UserRouter = require("./Routes/userRouter");
+const ratingRouter = require("./Routes/ratingRouter");
 const errorMiddleware = require("./controllers/errorController");
 const cookieParser = require("cookie-parser");
 //Parsing incoming data
@@ -13,6 +14,8 @@ app.use(cookieParser());
 app.use("/api/v1/recipes", recipeRouter);
 //Routing for Users
 app.use("/api/v1/users", UserRouter);
+//Routing for Ratings
+app.use("/api/v1/ratings", ratingRouter);
 
 app.use(errorMiddleware);
 

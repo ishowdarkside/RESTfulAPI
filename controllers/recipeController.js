@@ -8,6 +8,7 @@ const catchAsync = require(path.join(
 const AppError = require(path.join(__dirname, "..", "utilities", "AppError"));
 const Recipe = require(path.join(__dirname, "..", "models", "Recipe"));
 const User = require(path.join(__dirname, "..", "models", "User"));
+const Rating = require(path.join(__dirname, "..", "models", "Recipe"));
 
 exports.getAllRecipes = catchAsync(async (req, res, next) => {
   const page = +req.query.page || 1;
@@ -98,5 +99,18 @@ exports.deleteRecipe = catchAsync(async (req, res, next) => {
   await recipe.deleteOne();
   res.status(204).json({
     status: "success",
+  });
+});
+
+exports.rateRecipe = catchAsync(async (req, res, next) => {
+  const recipe = await Recipe.findById(req.params.recipeId);
+  const rating = await Rating.create({
+    recipe: recipe.id,
+    rating: req.body.rating,
+    author: req.user.id,
+  });
+  res.status(201).json({
+    status: "success",
+    rating,
   });
 });
