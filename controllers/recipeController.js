@@ -69,10 +69,13 @@ exports.createRecipe = catchAsync(async (req, res, next) => {
 });
 
 exports.getRecipeById = catchAsync(async (req, res, next) => {
-  const recipe = await Recipe.findById(req.params.recipeId).populate({
-    path: "author",
-    select: "name",
-  });
+  const recipe = await Recipe.findById(req.params.recipeId)
+    .populate({
+      path: "author",
+      select: "name",
+    })
+    .populate({ path: "ratings", select: "rating" });
+
   if (!recipe) return next(new AppError("Recipe not found!", 404));
 
   res.status(200).json({
@@ -99,18 +102,5 @@ exports.deleteRecipe = catchAsync(async (req, res, next) => {
   await recipe.deleteOne();
   res.status(204).json({
     status: "success",
-  });
-});
-
-exports.rateRecipe = catchAsync(async (req, res, next) => {
-  const recipe = await Recipe.findById(req.params.recipeId);
-  const rating = await Rating.create({
-    recipe: recipe.id,
-    rating: req.body.rating,
-    author: req.user.id,
-  });
-  res.status(201).json({
-    status: "success",
-    rating,
   });
 });

@@ -36,10 +36,4 @@ router.delete(
   recipeController.deleteRecipe
 );
 
-router.post(
-  "/recipe/rate-recipe/:recipeId",
-  authController.protect,
-  recipeController.rateRecipe
-);
-
 module.exports = router;
