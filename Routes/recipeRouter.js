@@ -36,4 +36,11 @@ router.delete(
   recipeController.deleteRecipe
 );
 
+//update recipe
+router.patch(
+  "/recipe/:recipeId",
+  authController.protect,
+  recipeController.updateRecipe
+);
+
 module.exports = router;

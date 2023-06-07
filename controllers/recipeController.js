@@ -1,3 +1,5 @@
+const { exec } = require("child_process");
+const exp = require("constants");
 const path = require("path");
 const catchAsync = require(path.join(
   __dirname,
@@ -102,5 +104,33 @@ exports.deleteRecipe = catchAsync(async (req, res, next) => {
   await recipe.deleteOne();
   res.status(204).json({
     status: "success",
+  });
+});
+
+exports.updateRecipe = catchAsync(async (req, res, next) => {
+  const recipe = await Recipe.findById(req.params.recipeId);
+  if (!recipe) return next(new AppError("Recipe not found!", 404));
+  if (!recipe.author.equals(req.user.id))
+    return next(
+      new AppError("You don't have permission to preform this operation!", 401)
+    );
+  const exeptions = ["author", "ratings"];
+
+  if (exeptions.some((el) => req.body[el]))
+    return next(
+      new AppError(
+        `You can't change certain properties like author or ratings`,
+        400
+      )
+    );
+
+  Object.entries(req.body).forEach((el) => {
+    recipe[el[0]] = el[1];
+  });
+  console.log(req.body);
+  await recipe.save({ validateBeforeSave: true });
+  res.status(200).json({
+    status: "success",
+    message: "Recipe updated successfully!",
   });
 });

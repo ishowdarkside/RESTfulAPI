@@ -20,7 +20,7 @@ exports.rateRecipe = catchAsync(async (req, res, next) => {
     return next(new AppError("You can't rate your own recipes!", 400));
   const rating = await Rating.create({
     recipe: recipe.id,
-    rating: req.body.rating,
+    rating: parseFloat(req.body.rating.toFixed(1)),
     author: req.user.id,
     content: req.body.content,
   });

@@ -86,7 +86,8 @@ RecipeSchema.statics.checkFields = function (body) {
 
 RecipeSchema.virtual("avgRating").get(function () {
   return this.ratings.reduce(
-    (acc, obj) => ((acc + obj?.rating) / this.ratings.length).toFixed(2),
+    (acc, obj) =>
+      parseFloat(((acc + +obj?.rating) / this.ratings.length).toFixed(1)),
     0
   );
 });
