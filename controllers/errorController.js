@@ -35,10 +35,16 @@ module.exports = (err, req, res, next) => {
       });
     }
     if (err.code === 11000) {
-      const msg =
-        Object.keys(err.keyPattern)[0] === "email"
-          ? "Email already in use"
-          : "Recipe with this title already exist. Please try different one!";
+      let msg;
+      if (err.keyPattern.email) {
+        msg = "Email already in use, please try different one!";
+      }
+      if (err.keyPattern.recipe && !err.keyPattern.author) {
+        msg = "Recipe with this title already exist. Please try different one!";
+      }
+      if (err.keyPattern.recipe && err.keyPattern.author) {
+        msg = "You have already rated this recipe!";
+      }
       return res.status(400).json({
         status: "fail",
         message: msg,
@@ -53,7 +59,6 @@ module.exports = (err, req, res, next) => {
       return res.status(500).json({
         status: "error",
         message: "Something went really wrong!",
-        msg: err.message,
       });
     }
   }

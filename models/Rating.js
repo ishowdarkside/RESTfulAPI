@@ -18,7 +18,7 @@ const ratingSchema = new mongoose.Schema({
   },
 });
 
-ratingSchema.index({ author: 1, rating: 1 }, { unique: true });
+ratingSchema.index({ author: 1, recipe: 1 }, { unique: true });
 
 const Rating = mongoose.model("Rating", ratingSchema);
 
