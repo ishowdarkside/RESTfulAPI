@@ -158,5 +158,5 @@ The search functionality allows users to find recipes that align with their spec
 # Conclusion
 This API documentation provides an overview of the Recipe API's endpoints and their functionalities. It includes authentication endpoints for signing up and logging in, as well as various features for managing recipes such as retrieving recipes, getting recipes by category, managing user-specific recipes, updating recipes, rating recipes, and retrieving user information and their recipes.
   
-# API INFO
-this api is made by jedan jedini Ajdin Omerovic ishowdarkside!
+# API DOCS 
+Dokumentacija generisana by CHATGPT
